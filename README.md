@@ -14,7 +14,7 @@ the vendored app folder (see [UPSTREAM.md](UPSTREAM.md)).
 
 ```bash
 isoloom generate
-isoloom up docker
+isoloom run docker
 ```
 
 Then send requests to http://localhost:20001/ (`POST /register`, `POST /login`, `POST /newpost` with a Bearer token). The same spec runs as Docker on a local VM (`docker-vm`), on a cloud VM
