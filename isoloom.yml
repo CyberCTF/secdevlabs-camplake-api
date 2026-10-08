@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# Camp Crystal Lake API (secDevLabs, by Globo.com) as an Isoloom spec: a Go API with a Broken
+# Access Control flaw in its JWT handling, vendored unchanged in build/api/app/ (the app folder
+# owasp-top10-2021-apps/a1/camplake-api of secDevLabs), built by an overlay of upstream's
+# Dockerfile, and its MongoDB machine. `isoloom generate`, then `isoloom up docker`.
+version: 1
+name: secdevlabs-camplake-api
+
+networks:
+  lab: { cidr: 10.60.90.0/24, internet: false }
+
+machines:
+  mongodb:
+    networks: { lab: 20 }
+    services: [{ port: 27017, name: mongodb }]
+    resources: { cpus: 1, memory_mb: 512 }
+    volumes: { data: /data/db }
+    docker:
+      build: build/mongodb
+
+  api:
+    networks: { lab: 10 }
+    services: [{ port: 20001, name: api, http: true, publish: 20001 }]
+    resources: { cpus: 1, memory_mb: 512 }
+    depends_on: [mongodb]
+    docker:
+      build: build/api
+
+checks:
+  - name: the API answers
+    http: http://api:20001/healthcheck
+    wait: 180
+  - name: register and login hand out a JWT
+    script: checks/jwt.sh
+    wait: 60
+
+message: |
+  Camp Crystal Lake API answers at http://localhost:{{ machines.api.services.0.publish }}/
+  (POST /register, POST /login, POST /newpost with a Bearer token). Register a user, log in,
+  and look closely at how the API checks the token it gives you.
