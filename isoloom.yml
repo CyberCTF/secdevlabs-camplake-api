@@ -6,6 +6,9 @@
 version: 1
 name: secdevlabs-camplake-api
 
+# Given by the CyberCTF launcher: this player's flag. Without it the development flag.
+inputs: [CTF_FLAG_MAIN]
+
 networks:
   lab: { cidr: 10.60.90.0/24, internet: false }
 
@@ -23,8 +26,11 @@ machines:
     services: [{ port: 20001, name: api, http: true, publish: 20001 }]
     resources: { cpus: 1, memory_mb: 512 }
     depends_on: [mongodb]
+    inputs: [CTF_FLAG_MAIN]
+    volumes: { ctf: /ctf }   # the flag, written by ctf/flag.sh at every start
     docker:
       build: build/api
+      init: [ctf/flag.sh]
 
 checks:
   - name: the API answers

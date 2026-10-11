@@ -1,0 +1,42 @@
+{
+  "objectives": [
+    {
+      "key": "main",
+      "title": "Read the flag",
+      "prompt": "Forge a token the API accepts and retrieve the flag (/ctf/flag).",
+      "check": {
+        "evidence": "SECRET",
+        "format": "FLAG{%s}"
+      },
+      "dev": "FLAG{dev-secdevlabs-camplake-api}",
+      "hints": [
+        "Look at how the API checks the token when a post is created.",
+        "Read about JWT signature validation weaknesses."
+      ],
+      "steps": [
+        {
+          "key": "token",
+          "title": "Identify the token",
+          "prompt": "Which token format does the API issue at login? (acronym)",
+          "check": {
+            "answer": [
+              "jwt",
+              "json web token"
+            ]
+          }
+        },
+        {
+          "key": "db",
+          "title": "Identify the datastore",
+          "prompt": "Which database stores the posts?",
+          "check": {
+            "answer": [
+              "mongodb",
+              "mongo"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "title": "secDevLabs Camp Crystal Lake API",
   "description": "A Go API for a summer camp's posts, backed by MongoDB. Users register and log in to receive a JWT, which the API checks too loosely when a post is created.",
-  "question": "Forge a JWT the API accepts and create a post as another user without knowing their password.",
+  "question": "Forge a JWT the API accepts and act as another user. The flag is in /ctf/flag.",
   "category": "WEB",
   "difficulty": 2,
   "evidence_kind": "SECRET"
